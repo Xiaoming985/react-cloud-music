@@ -1,0 +1,10 @@
+.logo {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+}
+
+.logo-name {
+  padding-left: 5px;
+  font-size: 20px;
+}
