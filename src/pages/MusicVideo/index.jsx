@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-export default class Index extends Component {
+export default class MusicVideo extends Component {
   render() {
     return (
       <div>
-        发现音乐
+        MV
       </div>
     )
   }

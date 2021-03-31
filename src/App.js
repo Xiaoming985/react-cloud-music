@@ -1,9 +1,14 @@
 import './App.less';
-import Router from './router'
+import Layout from './layouts/index-layout.jsx'
+import {HashRouter as Router} from 'react-router-dom'
 
 function App() {
   return (
-    <Router />
+    <div className="App">
+      <Router>
+        <Layout />
+      </Router>
+    </div>
   );
 }
 
