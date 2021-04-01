@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Menu } from 'antd';
 import './header.css'
+import {withRouter} from "react-router"
 
-export default class Header extends Component {
+class Header extends Component {
   state = {
     current: 'recommend',
   };
@@ -10,16 +11,17 @@ export default class Header extends Component {
   handleClick = e => {
     console.log('click ', e);
     this.setState({ current: e.key });
+    this.props.history.replace(e.key);
   };
 
   render() {
     const { current } = this.state;
     return (
-      <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
+      <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal" className="header-menu">
         <Menu.Item key="recommend">
           个性推荐
         </Menu.Item>
-        <Menu.Item key="song-list">
+        <Menu.Item key="songList">
           歌单
         </Menu.Item>
         <Menu.Item key="broadcast">
@@ -35,3 +37,5 @@ export default class Header extends Component {
     );
   }
 }
+
+export default withRouter(Header)

@@ -19,6 +19,7 @@ import {
   SettingOutlined
 } from '@ant-design/icons'
 import Routers from '../router'
+import Player from '../components/Player'
 import "./index-layouts.less"
 import {withRouter} from "react-router"
 
@@ -37,7 +38,7 @@ class IndexLayout extends Component {
   };
 
   menuClick = (e) => {
-    this.props.history.push(e.key);
+    this.props.history.replace(e.key);
   }
 
   render() {
@@ -60,7 +61,7 @@ class IndexLayout extends Component {
                 title={this.state.collapsed ? '展开' : '收起'}
               />
             </div>
-            <div style={{height: 'calc(100% - 100px)', overflowY:this.state.collapsed ? 'hidden': 'auto'}}>
+            <div style={{height: 'calc(100% - 87.5px)', overflowY:this.state.collapsed ? 'hidden': 'auto'}}>
               <Menu
                 defaultSelectedKeys={['index']}
                 mode="inline"
@@ -143,7 +144,8 @@ class IndexLayout extends Component {
                       whiteSpace: 'nowrap', 
                       display: 'inline-block', 
                       marginLeft: '5px',
-                      width: '60%'
+                      width: '60%',
+                      textAlign: 'left'
                     }}>
                     用户名
                   </span> 
@@ -153,11 +155,13 @@ class IndexLayout extends Component {
               <SettingOutlined className={iconClass} />
             </div>
           </Sider>
-          <Content>
+          <Content style={{padding: '10px', backgroundColor: '#fff', overflowY: 'auto'}}>
             <Routers />
           </Content>
         </Layout>
-        <Footer>Footer</Footer>
+        <Footer style={{padding: '0', height: '70px',overflow: 'hidden', backgroundColor: '#fff', borderTop: '0.5px solid rgba(0, 0, 0, 0.1)'}}>
+          <Player />
+        </Footer>
       </Layout>
     )
   }

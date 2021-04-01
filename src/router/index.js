@@ -12,7 +12,7 @@ export default class Routers extends Component {
         <Switch>
           <Route path="/index" component={Index} />
           <Route path="/mv" component={MV} />
-          <Redirect to="/index" />
+          {/* <Redirect to="/index" /> */}
         </Switch>
       </Router>
     )
