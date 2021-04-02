@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Header from "../../components/Header"
 import { Carousel } from 'antd';
-import {Route, Switch} from 'react-router-dom'
+import {Route, Switch, Redirect} from 'react-router-dom'
 
 export default class Index extends Component {
   render() {
@@ -16,7 +16,7 @@ export default class Index extends Component {
       <div>
         <Header />
         <Switch>
-          <Route path="/index/recommend" >
+          <Route path="/index/recommend" exact>
             <Carousel>
               <div>
                 <h3 style={contentStyle}>1</h3>
@@ -32,6 +32,8 @@ export default class Index extends Component {
               </div>
             </Carousel>
           </Route>
+          <Route path="/index/songList">歌单</Route>
+          <Redirect to="/index/recommend" />
         </Switch>
       </div>
     )

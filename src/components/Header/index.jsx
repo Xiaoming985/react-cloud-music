@@ -9,9 +9,8 @@ class Header extends Component {
   };
 
   handleClick = e => {
-    console.log('click ', e);
     this.setState({ current: e.key });
-    this.props.history.replace(e.key);
+    this.props.history.replace(`${this.props.match.url}/${e.key}`);
   };
 
   render() {

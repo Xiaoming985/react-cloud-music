@@ -45,7 +45,7 @@ export default class Player extends Component {
             <span>歌曲 - 歌手</span>
             <span>01:00 / 03:59</span>
           </div>
-          <Slider defaultValue={30} />
+          <Slider defaultValue={30} tooltipVisible={false} />
           <audio src=""></audio>
         </div>
         <div style={{flex: 2, display: 'flex', justifyContent: 'space-around', alignItems:'center'}}>
