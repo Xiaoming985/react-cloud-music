@@ -38,7 +38,7 @@ class IndexLayout extends Component {
   };
 
   menuClick = (e) => {
-    this.props.history.replace(e.key);
+    this.props.history.replace("/" + e.key);
   }
 
   render() {

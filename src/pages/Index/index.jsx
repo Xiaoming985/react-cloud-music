@@ -16,7 +16,7 @@ export default class Index extends Component {
       <div>
         <Header />
         <Switch>
-          <Route path="/index/recommend" exact>
+          <Route path="/index/recommend">
             <Carousel>
               <div>
                 <h3 style={contentStyle}>1</h3>
