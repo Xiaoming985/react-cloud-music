@@ -29,7 +29,6 @@ class IndexLayout extends Component {
   state = {
     collapsed: false,
   };
-  siderRef = React.createRef();
 
   toggle = () => {
     this.setState({
@@ -52,7 +51,6 @@ class IndexLayout extends Component {
             collapsed={this.state.collapsed}
             trigger={null}
             style={{overflowX: 'hidden', overflowY: 'auto', borderRight: '0.5px solid rgba(0, 0, 0, 0.1)'}}
-            ref={this.siderRef}
           >
             <div style={{backgroundColor: '#fff', textAlign: 'left'}}>
               <MenuOutlined 
