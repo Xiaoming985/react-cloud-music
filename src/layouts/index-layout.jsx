@@ -153,7 +153,7 @@ class IndexLayout extends Component {
               <SettingOutlined className={iconClass} />
             </div>
           </Sider>
-          <Content style={{padding: '10px', backgroundColor: '#fff', overflowY: 'auto'}}>
+          <Content style={{padding: '10px 25px', backgroundColor: '#fff', overflowY: 'auto'}}>
             <Routers />
           </Content>
         </Layout>

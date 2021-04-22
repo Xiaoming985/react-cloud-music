@@ -17,14 +17,14 @@
 .player-icon__ctrl {
   font-size: 1.5em;
   color: #fff;
-  background-color: #df3b3b;
+  background-color: #e82202;
   padding: 5px;
   border-radius: 50%;
 }
 
 .player-icon__main {
   font-size: 2.8em;
-  color: #df3b3b;
+  color: #e82202;
   background-color: #fff;
   padding: 5px;
   border-radius: 50%;

@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import axios from 'axios';
+import http from './utils/http';
 
-React.Component.prototype.$axios = axios;
+React.Component.prototype.$http = http;
 
 ReactDOM.render(
   // <React.StrictMode>
