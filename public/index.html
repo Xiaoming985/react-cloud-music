@@ -25,10 +25,22 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>网易云音乐</title>
+    <style>
+      .loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <img src="./cloud-music.png" alt="" class="loading" />
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
