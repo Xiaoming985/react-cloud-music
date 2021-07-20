@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Menu } from 'antd';
-import './header.css'
 import {withRouter} from "react-router"
+import './header.css'
 
 class Header extends Component {
   state = {
