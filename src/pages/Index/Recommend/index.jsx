@@ -1,29 +1,54 @@
 import React, { Component } from 'react'
+import { getBanner, getSongList, getNewSongs } from "@/api/api"
 import { Carousel } from 'antd'
+// import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import'./index.less'
-
 export default class Recommend extends Component {
 
+  state = {
+    banner: [],
+    songList: [],
+    newSongs: []
+  }
+
   componentDidMount() {
-    
+    getBanner({}).then(res => {
+      this.setState({
+        banner: res.banners
+      })
+    })
+    getSongList({limit: 16}).then(res => {
+      this.setState({
+        songList: res.playlists
+      })
+    })
+    getNewSongs({type: 0}).then(res => {
+      this.setState({
+        newSongs: res.data.slice(0, 10)
+      })
+    })
   }
 
   render() {
+    const { banner, songList, newSongs } = this.state 
     return (
       <div className="recommend-wrap">
-        <Carousel autoplay={true}>
-          <div>
-            <h3 className="carousel">1</h3>
-          </div>
-          <div>
-            <h3 className="carousel">2</h3>
-          </div>
-          <div>
-            <h3 className="carousel">3</h3>
-          </div>
-          <div>
-            <h3 className="carousel">4</h3>
-          </div>
+        <Carousel
+          autoplay={true}
+          slidesToShow={1}
+          lazyLoad={true}
+          centerMode={true}
+          variableWidth={false}
+        >
+          {
+            banner.map(item => {
+              return (
+                // <div key={item.targetId} style={{display:'flex',justifyContent:'center'}}>
+                  <img src={item.imageUrl} alt="" key={item.targetId} className="carousel" />
+                // </div>
+              )
+            })
+          }
         </Carousel>
         <div className="daily">
           <div className="daily-item">
@@ -61,38 +86,16 @@ export default class Recommend extends Component {
           <span className="text__more">更多&gt;</span>
         </div>
         <div className="recommend-list">
-          <div className="recommend-item">
-            <img src="" alt="" className="recommend-item__img" />
-            <span className="recommend-item__title">title</span>
-          </div>
-          <div className="recommend-item">
-            <img src="" alt="" className="recommend-item__img" />
-            <span className="recommend-item__title">title</span>
-          </div>
-          <div className="recommend-item">
-            <img src="" alt="" className="recommend-item__img" />
-            <span className="recommend-item__title">title</span>
-          </div>
-          <div className="recommend-item">
-            <img src="" alt="" className="recommend-item__img" />
-            <span className="recommend-item__title">title</span>
-          </div>
-          <div className="recommend-item">
-            <img src="" alt="" className="recommend-item__img" />
-            <span className="recommend-item__title">title</span>
-          </div>
-          <div className="recommend-item">
-            <img src="" alt="" className="recommend-item__img" />
-            <span className="recommend-item__title">title</span>
-          </div>
-          <div className="recommend-item">
-            <img src="" alt="" className="recommend-item__img" />
-            <span className="recommend-item__title">title</span>
-          </div>
-          <div className="recommend-item">
-            <img src="" alt="" className="recommend-item__img" />
-            <span className="recommend-item__title">title</span>
-          </div>
+          {
+            songList.map(item => {
+              return (
+                <div className="recommend-item" key={item.id}>
+                  <img src={item.coverImgUrl + "?param=150y150"} alt="" className="recommend-item__img" />
+                  <span className="recommend-item__title">{item.name}</span>
+                </div>
+              )
+            })
+          }
         </div>
 
         <div className="section">
@@ -102,54 +105,20 @@ export default class Recommend extends Component {
           <span className="text__more">更多&gt;</span>
         </div>
         <div className="new-list">
-          <div className="new-item">
-            <div className="new-item__index">01</div>
-            <img src="" alt="" className="new-item__img" />
-            <div className="new-item__song">
-              <span className="new-item__song-name">Title</span>
-              <span className="new-item__song-desc">Label</span>
-            </div>
-          </div>
-          <div className="new-item">
-            <div className="new-item__index">01</div>
-            <img src="" alt="" className="new-item__img" />
-            <div className="new-item__song">
-              <span className="new-item__song-name">Title</span>
-              <span className="new-item__song-desc">Label</span>
-            </div>
-          </div>
-          <div className="new-item">
-            <div className="new-item__index">01</div>
-            <img src="" alt="" className="new-item__img" />
-            <div className="new-item__song">
-              <span className="new-item__song-name">Title</span>
-              <span className="new-item__song-desc">Label</span>
-            </div>
-          </div>
-          <div className="new-item">
-            <div className="new-item__index">01</div>
-            <img src="" alt="" className="new-item__img" />
-            <div className="new-item__song">
-              <span className="new-item__song-name">Title</span>
-              <span className="new-item__song-desc">Label</span>
-            </div>
-          </div>
-          <div className="new-item">
-            <div className="new-item__index">01</div>
-            <img src="" alt="" className="new-item__img" />
-            <div className="new-item__song">
-              <span className="new-item__song-name">Title</span>
-              <span className="new-item__song-desc">Label</span>
-            </div>
-          </div>
-          <div className="new-item">
-            <div className="new-item__index">01</div>
-            <img src="" alt="" className="new-item__img" />
-            <div className="new-item__song">
-              <span className="new-item__song-name">Title</span>
-              <span className="new-item__song-desc">Label</span>
-            </div>
-          </div>
+          {
+            newSongs.map((item,index) => {
+              return (
+                <div className="new-item" key={item.id}>
+                  <div className="new-item__index">{index + 1}</div>
+                  <img src={item.album.picUrl + '?param=50y50'} alt="" className="new-item__img" />
+                  <div className="new-item__song">
+                    <span className="new-item__song-name">{item.name}</span>
+                    <span className="new-item__song-desc">Label</span>
+                  </div>
+                </div>
+              )
+            })
+          }
         </div>
       </div>
     )

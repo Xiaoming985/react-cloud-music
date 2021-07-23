@@ -1,5 +1,5 @@
 import './App.less';
-import Layout from './layouts/index-layout.jsx'
+import Layout from './layouts/index.jsx'
 import {HashRouter as Router} from 'react-router-dom'
 
 function App() {

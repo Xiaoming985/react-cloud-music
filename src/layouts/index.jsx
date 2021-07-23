@@ -20,7 +20,7 @@ import {
 } from '@ant-design/icons'
 import Routers from '../router'
 import Player from '../components/Player'
-import "./index-layouts.less"
+import "./index.less"
 import {withRouter} from "react-router"
 
 const { Footer, Sider, Content } = Layout;

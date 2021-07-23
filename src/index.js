@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import http from './utils/http';
 
-React.Component.prototype.$http = http;
+// import http from './utils/http';
+// React.Component.prototype.$http = http;
 
 ReactDOM.render(
   // <React.StrictMode>

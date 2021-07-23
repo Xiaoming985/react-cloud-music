@@ -1,12 +1,21 @@
 /*外层包裹同一个父类名称，防止样式污染*/
 .recommend-wrap {
+  .ant-carousel .slick-prev,
+  .ant-carousel .slick-next,
+  .ant-carousel .slick-prev:hover,
+  .ant-carousel .slick-next:hover,
+  .ant-carousel .slick-prev:focus,
+  .ant-carousel .slick-next:focus {
+    font-size: inherit;
+    color: currentColor;
+  }
   /* 轮播图 */
   .carousel {
-    height: 160px;
-    color: #fff;
-    line-height: 160px;
-    text-align: center;
-    background: #ffede6;
+    // width: 1080px!important;
+    // aspect-ratio: auto 1080 / 400;
+    // height: 400px;
+    // width: 432px!important;
+    height: 200px;
   }
 
   /*每日推荐*/

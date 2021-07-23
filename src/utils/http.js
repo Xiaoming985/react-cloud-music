@@ -51,11 +51,11 @@ const errHandle = (status, other) => {
 }
 
 const instance = axios.create({
-  baseURL: "",
+  baseURL: process.env.REACT_APP_BASE_URL,
   timeout: 30 * 1000,
-  withCredentials: false,
+  withCredentials: true,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json;charset=utf-8"
   }
 })
 // instance.defaults.withCredentials = false
