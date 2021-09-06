@@ -26,3 +26,30 @@ export function getNewSongs(data) {
     params: data
   })
 }
+
+// 推荐歌单
+export function getRecommendSongList(data) {
+  return http({
+    url: '/personalized',
+    method: 'get',
+    params: data
+  })
+}
+
+// 推荐新音乐
+export function getRecommendNewSongs(data) {
+  return http({
+    url: '/personalized/newsong',
+    method: 'get',
+    params: data
+  })
+}
+
+// 获取音乐url
+export function getMusicUrl(data) {
+  return http({
+    url: '/song/url',
+    method: 'get',
+    params: data
+  })
+}

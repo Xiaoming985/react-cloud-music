@@ -1,41 +1,58 @@
 import React, { Component } from 'react'
-import { getBanner, getSongList, getNewSongs } from "@/api/api"
-import { Carousel } from 'antd'
-// import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import { getBanner, getRecommendSongList, getRecommendNewSongs } from "@/api/api"
+import { Button, Carousel } from 'antd'
+import { CaretRightOutlined, PlusOutlined } from '@ant-design/icons'
 import'./index.less'
-export default class Recommend extends Component {
+import { connect } from 'react-redux'
+import { initMusic } from "@/store/actions/music"
+class Recommend extends Component {
 
   state = {
     banner: [],
     songList: [],
-    newSongs: []
+    newSongs: [],
+    active: undefined
   }
 
   componentDidMount() {
+    // 获取轮播图
     getBanner({}).then(res => {
       this.setState({
         banner: res.banners
       })
     })
-    getSongList({limit: 16}).then(res => {
+    // 获取歌单
+    getRecommendSongList({limit: 8}).then(res => {
       this.setState({
-        songList: res.playlists
+        songList: res.result
       })
     })
-    getNewSongs({type: 0}).then(res => {
+    // 最新音乐
+    getRecommendNewSongs().then(res => {
       this.setState({
-        newSongs: res.data.slice(0, 10)
+        newSongs: res.result
       })
     })
   }
 
+  playMusic = (item) => {
+    // console.log(item)
+    // this.props.initMusic(item)
+  }
+
+  handleClick = (item) => {
+    this.setState({
+      active: item.id
+    })
+  }
+
   render() {
-    const { banner, songList, newSongs } = this.state 
+    const { banner, songList, newSongs, active } = this.state 
     return (
       <div className="recommend-wrap">
         <Carousel
           autoplay={true}
-          slidesToShow={1}
+          slidesToShow={3}
           lazyLoad={true}
           centerMode={true}
           variableWidth={false}
@@ -90,7 +107,7 @@ export default class Recommend extends Component {
             songList.map(item => {
               return (
                 <div className="recommend-item" key={item.id}>
-                  <img src={item.coverImgUrl + "?param=150y150"} alt="" className="recommend-item__img" />
+                  <img src={item.picUrl + "?param=150y150"} alt="" className="recommend-item__img" />
                   <span className="recommend-item__title">{item.name}</span>
                 </div>
               )
@@ -108,12 +125,16 @@ export default class Recommend extends Component {
           {
             newSongs.map((item,index) => {
               return (
-                <div className="new-item" key={item.id}>
-                  <div className="new-item__index">{index + 1}</div>
-                  <img src={item.album.picUrl + '?param=50y50'} alt="" className="new-item__img" />
+                <div className={['new-item', active === item.id ? 'active-item' : ''].join(' ')} key={item.id} onClick={() => this.handleClick(item)}>
+                  <div className="new-item__index">{(index + 1 + "").padStart(2, "0")}</div>
+                  <img src={item.picUrl + '?param=50y50'} alt="" className="new-item__img" />
                   <div className="new-item__song">
-                    <span className="new-item__song-name">{item.name}</span>
-                    <span className="new-item__song-desc">Label</span>
+                    <span className="new-item__song-name">{item.name + (item.song.alias.length > 0 ? `(${item.song.alias.join("、")})` : '')}</span>
+                    <span className="new-item__song-desc">{item.song.artists.map(ele => ele.name).join("/")}</span>
+                  </div>
+                  <div className="new-item__ctrl">
+                    <Button type="primary" shape="circle" size="small" block icon={<CaretRightOutlined />} />
+                    <Button type="primary" shape="circle" size="small" block icon={<PlusOutlined />} />
                   </div>
                 </div>
               )
@@ -124,3 +145,8 @@ export default class Recommend extends Component {
     )
   }
 }
+
+export default connect(
+  () => ({}),
+  {initMusic}
+)(Recommend)
