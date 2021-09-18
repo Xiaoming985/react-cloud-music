@@ -4,7 +4,7 @@ import { Button, Carousel } from 'antd'
 import { CaretRightOutlined, PlusOutlined } from '@ant-design/icons'
 import'./index.less'
 import { connect } from 'react-redux'
-import { initMusic } from "@/store/actions/music"
+import { playMusic, addMusic } from "@/store/actions/music"
 class Recommend extends Component {
 
   state = {
@@ -35,9 +35,13 @@ class Recommend extends Component {
     })
   }
 
-  playMusic = (item) => {
+  handlePlay = (item) => {
+    this.props.playMusic(item)
+  }
+
+  addMusicToPlayList = (item) => {
     // console.log(item)
-    // this.props.initMusic(item)
+    this.props.addMusic(item)
   }
 
   handleClick = (item) => {
@@ -133,8 +137,8 @@ class Recommend extends Component {
                     <span className="new-item__song-desc">{item.song.artists.map(ele => ele.name).join("/")}</span>
                   </div>
                   <div className="new-item__ctrl">
-                    <Button type="primary" shape="circle" size="small" block icon={<CaretRightOutlined />} />
-                    <Button type="primary" shape="circle" size="small" block icon={<PlusOutlined />} />
+                    <Button type="primary" shape="circle" size="small" block icon={<CaretRightOutlined />} onClick={() => this.handlePlay(item)} />
+                    <Button type="primary" shape="circle" size="small" block icon={<PlusOutlined />} onClick={() => this.addMusicToPlayList(item)} />
                   </div>
                 </div>
               )
@@ -148,5 +152,15 @@ class Recommend extends Component {
 
 export default connect(
   () => ({}),
-  {initMusic}
+  (dispatch) => {
+    return {
+      playMusic: (data) => {
+        dispatch(playMusic(data))
+        dispatch(addMusic(data))
+      },
+      addMusic: (data) => {
+        dispatch(addMusic(data))
+      }
+    }
+  }
 )(Recommend)

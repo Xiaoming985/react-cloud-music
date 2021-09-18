@@ -1,3 +1,4 @@
-import { INIT_MUSIC } from "../constant"
+import { PLAY_MUSIC, ADD_MUSIC } from "../constant"
 
-export const initMusic = data => ({type: INIT_MUSIC, data})
+export const playMusic = data => ({type: PLAY_MUSIC, data})
+export const addMusic = data => ({type: ADD_MUSIC, data})
