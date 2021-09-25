@@ -15,7 +15,9 @@ import playerStyle from "./player.module.css"
 import { getMusicUrl } from "@/api/api"
 class Player extends Component {
   state = {
-    playing: false // 是否正在播放
+    playing: false, // 是否正在播放
+    max: 0, // 最大时长
+    currentTime: 0 // 当前播放时长
   };
   audio = React.createRef();
 
@@ -25,19 +27,20 @@ class Player extends Component {
       playing: !this.state.playing
     }, () => {
       if (this.state.playing) {
-        this.audio.current.play() 
+        this.audio.current.play() // 播放
+      } else {
+        this.audio.current.pause() // 暂停
       }
     });
   }
 
-  // 获取音乐的播放时长
-  getDuration = (duration) => {
-    return Math.floor(duration / 1000 / 60) + ":" + Math.round(duration / 1000 % 60)
-  }
-
   // 当前的播放位置发送改变时触发
   handleTimeUpdate = (e) => {
-    console.log(e);
+    // console.log(e);
+    this.setState({
+      currentTime: this.audio.current.currentTime, // 这里获取到的(单位:s)
+      max: this.audio.current.duration
+    })
   }
 
   // 播放时长改变时回调, 由"NaN"变为实际时长也会触发
@@ -45,27 +48,54 @@ class Player extends Component {
     this.handleTimeUpdate()
   }
 
+  // 当媒介已开始播放时触发
+  handlePlaying = () => {
+    this.setState({
+      playing: true
+    })
+  }
+
+  // 暂停时触发
+  handlePause = () => {
+    this.setState({
+      playing: false
+    })
+  }
+
+  // 当媒介已到达结尾时触发（PS:可发送类似“播放完毕,感谢收听/观看”之类的消息）。
+  handleEnded = () => {
+    this.setState({
+      currentTime: 0,
+      playing: false
+    })
+  }
+
   // 播放进度条改变时回调
   handleSliderChange = (value) => {
     this.audio.current.currentTime = value
   }
 
-  // 格式化播放时长
+  // 格式化播放时长, duration(单位:ms)
   formatDuration = (duration) => {
-
+    return Math.floor(duration / 1000 / 60).toString().padStart(2, '0') 
+      + ":" 
+      + Math.round(duration / 1000 % 60).toString().padStart(2, '0')
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     // console.log(this.props.playList);
     // 根据id获取音乐url
-    getMusicUrl({id: this.props.music.id}).then(res => {
-      this.audio.current.src = res.data[0].url
-      this.audio.current.play()
-    })
+    if (!prevProps.music || prevProps.music.id !== this.props.music.id) {
+      getMusicUrl({id: this.props.music.id}).then(res => {
+        this.audio.current.src = res.data[0].url
+        this.audio.current.play()
+      })
+    }
   }
 
   render() {
     // console.log(this)
+    const { max, currentTime } = this.state
     const { music } = this.props
     return (
       <div style={{display: 'flex', alignItems: 'center'}}>
@@ -89,15 +119,23 @@ class Player extends Component {
             <span>
               { music ? music.name + (music.song.alias.length > 0 ? `(${music.song.alias.join("、")})` : '') : '歌曲' } - { music ? music.song.artists.map(ele => ele.name).join("/") : '歌手' }
             </span>
-            <span>00:00 / {`${music ? this.getDuration(music.song.duration) : '00:00'}`}</span>
+            <span>{ this.formatDuration(currentTime * 1000) } / {`${music ? this.formatDuration(music.song.duration) : '00:00'}`}</span>
           </div>
           <Slider
-            defaultValue={0}
+            value={currentTime}
+            max={max}
             tooltipVisible={false}
             disabled={this.props.music ? false : true}
             onChange={this.handleSliderChange}
           />
-          <audio src="" ref={this.audio} onTimeUpdate={this.handleTimeUpdate}>
+          <audio
+            src=""
+            ref={this.audio}
+            onTimeUpdate={this.handleTimeUpdate}
+            onPlaying={this.handlePlaying}
+            onPause={this.handlePause}
+            onEnded={this.handleEnded}
+          >
             Your browser does not support the audio element.
           </audio>
         </div>
