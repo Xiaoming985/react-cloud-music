@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux"
-import { Image, Slider, Popover } from 'antd';
+import { Image, Slider, Popover, message } from 'antd';
 import {
   StepBackwardOutlined,
   PauseCircleFilled,
@@ -13,6 +13,8 @@ import {
 } from '@ant-design/icons'
 import playerStyle from "./player.module.css"
 import { getMusicUrl } from "@/api/api"
+import { playMusic } from "@/store/actions/music"
+
 class Player extends Component {
   state = {
     playing: false, // 是否正在播放
@@ -21,17 +23,35 @@ class Player extends Component {
   };
   audio = React.createRef();
 
-  // 切换播放状态
-  switch = () => {
-    this.setState({
-      playing: !this.state.playing
-    }, () => {
-      if (this.state.playing) {
-        this.audio.current.play() // 播放
-      } else {
-        this.audio.current.pause() // 暂停
-      }
-    });
+  /**
+   * 切换播放状态
+   * @param {String} flag on-播放/暂停 prev-上一首 next-下一首
+   */
+   handleSwitch = (flag) => {
+    if (flag === 'on') {
+      this.setState({
+        playing: !this.state.playing
+      }, () => {
+        if (this.state.playing) {
+          this.audio.current.play() // 播放
+        } else {
+          this.audio.current.pause() // 暂停
+        }
+      });
+      return;
+    }
+    let index = this.props.playList.findIndex(item => item.id === this.props.music.id)
+    let length = this.props.playList.length
+    if (length === 1) {
+      // 播放列表仅一首
+      message.warning('no more');
+      return;
+    }
+    let idx = flag === 'prev' 
+      ? (index - 1) < 0 ? (length - 1) : (index - 1)
+      : (index + 1) > (length - 1) ? 0 : (index + 1)
+    // console.log(idx);
+    this.props.playMusic(this.props.playList[idx])
   }
 
   // 当前的播放位置发送改变时触发
@@ -106,13 +126,13 @@ class Player extends Component {
           src={ music ? music.picUrl + '?param=70y70' : "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"}
         />
         <div style={{flex: 1.5, display: 'flex', justifyContent: 'center', alignItems:'center'}}>
-          <StepBackwardOutlined className={playerStyle['player-icon__ctrl']} />
+          <StepBackwardOutlined className={playerStyle['player-icon__ctrl']} onClick={() => this.handleSwitch('prev')} />
           { 
             this.state.playing 
-              ? <PauseCircleFilled className={playerStyle['player-icon__main']} onClick={this.switch} /> 
-              : <PlayCircleFilled className={playerStyle['player-icon__main']} onClick={this.switch} />
+              ? <PauseCircleFilled className={playerStyle['player-icon__main']} onClick={() => this.handleSwitch('on')} /> 
+              : <PlayCircleFilled className={playerStyle['player-icon__main']} onClick={() => this.handleSwitch('on')} />
           }
-          <StepForwardOutlined className={playerStyle['player-icon__ctrl']} />
+          <StepForwardOutlined className={playerStyle['player-icon__ctrl']} onClick={() => this.handleSwitch('next')} />
         </div>
         <div style={{flex: 6, padding: '0 10px'}}>
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems:'center', padding: '0 5px'}}>
@@ -158,5 +178,8 @@ export default connect(
   state => ({
     music: state.music,
     playList: state.playList
+  }),
+  dispatch => ({
+    playMusic: (data) => dispatch(playMusic(data))
   })
 )(Player)
