@@ -25,13 +25,11 @@ install:
 
 # 执行清缓存，生成网页操作
 script:
-  - yarn test
   - yarn build
 
 # 设置git提交名，邮箱；替换真实token到_config.yml文件，最后deploy部署
 after_script:
-  # 执行完 travis 测试任务无报错后上传报告
-  - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./node_modules/.bin/codecov; fi
+  
 
 # End: Build LifeCycle
 
@@ -42,5 +40,5 @@ deploy:
   local-dir: ./build
   keep-history: true
   on:
-    branch: master
+    branch: main
   local-dir: public
